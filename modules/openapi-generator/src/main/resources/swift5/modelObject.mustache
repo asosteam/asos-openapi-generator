@@ -31,15 +31,14 @@ public struct {{{classname}}}: Equatable {
 {{/isEnum}}
 {{/allVars}}
 }
-{{#vendorExtensions.x-codegen-has-escaped-property-names}}
 
 // MARK: - Decodable
 
-extension {{{classname}}}: Decodable {
+extension {{{classname}}}: Decodable { {{#vendorExtensions.x-codegen-has-escaped-property-names}}
+    
     private enum CodingKeys: {{#hasVars}}String, {{/hasVars}}CodingKey {
         {{#allVars}}
         case {{{name}}}{{#vendorExtensions.x-codegen-escaped-property-name}} = "{{{baseName}}}"{{/vendorExtensions.x-codegen-escaped-property-name}}
         {{/allVars}}
     }
-}
-{{/vendorExtensions.x-codegen-has-escaped-property-names}}
+}{{/vendorExtensions.x-codegen-has-escaped-property-names}}}
