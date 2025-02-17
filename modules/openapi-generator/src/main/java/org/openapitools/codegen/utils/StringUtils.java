@@ -9,6 +9,7 @@ import org.openapitools.codegen.config.GlobalSettings;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -215,7 +216,47 @@ public class StringUtils {
         return word;
     }
 
+    /**
+     * Camelizes a name by appending the extra replacements
+     * 
+     * @param word string to be camelize
+     * @return camelized and replaced string
+     */
+    public static String camelizeApplyingFormat(String word) {
+        return camelizeApplyingFormat(word, UPPERCASE_FIRST_CHAR);
+    }
+
+    /**
+     * Camelizes a name by appending the extra replacements
+     * 
+     * @param inputWord string to be camelize
+     * @param camelizeOption option for the camelize result
+     * @return camelized and replaced string
+    */
+    public static String camelizeApplyingFormat(final String inputWord, CamelizeOption camelizeOption) {
+        String word = camelize(inputWord, camelizeOption);
+        word = applyExtraFormatting(word);
+        return word;
+    }
+
+    public static String applyExtraFormatting(String input) {
+        List<String> replacements = Arrays.asList(
+            "Asos",
+            "Id",
+            "Url"
+        );
+
+        String output = input;
+
+        for (String replacement : replacements) {
+            output = output.replace(replacement, replacement.toUpperCase());
+        }
+
+        return output;
+    }
+
     private static class EscapedNameOptions {
+
         public EscapedNameOptions(String name, Set<String> specialChars, List<String> charactersToAllow, String appendToReplacement) {
             this.name = name;
             this.appendToReplacement = appendToReplacement;
