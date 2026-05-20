@@ -17,6 +17,8 @@
 
 package org.openapitools.codegen.languages;
 
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -101,6 +103,7 @@ public class Swift5ClientCodegen extends DefaultCodegen implements CodegenConfig
     @Setter protected boolean useCustomDateWithoutTime = false;
     @Setter protected boolean validatable = true;
     @Setter protected String[] responseAs = new String[0];
+    protected Set<String> requestBodyModelNames = new HashSet<>();
     protected String sourceFolder = swiftPackagePath;
     protected HashSet objcReservedWords;
     protected String apiDocPath = "docs/";
@@ -1126,6 +1129,9 @@ public class Swift5ClientCodegen extends DefaultCodegen implements CodegenConfig
             if (modelHasPropertyWithEscapedName) {
                 cm.vendorExtensions.put("x-codegen-has-escaped-property-names", true);
             }
+            if (cm.allVars.size() > 1) {
+                cm.vendorExtensions.put("x-has-multiple-vars", true);
+            }
         }
 
         return postProcessedModelsEnum;
@@ -1171,6 +1177,62 @@ public class Swift5ClientCodegen extends DefaultCodegen implements CodegenConfig
         if ("swift".equals(FilenameUtils.getExtension(file.toString()))) {
             this.executePostProcessor(new String[] {swiftPostProcessFile, file.toString()});
         }
+    }
+
+    @Override
+    public void processOpenAPI(OpenAPI openAPI) {
+        super.processOpenAPI(openAPI);
+        if (openAPI.getPaths() == null) return;
+        for (io.swagger.v3.oas.models.PathItem pathItem : openAPI.getPaths().values()) {
+            for (Operation operation : pathItem.readOperations()) {
+                if (operation.getRequestBody() == null) continue;
+                io.swagger.v3.oas.models.media.Content content = operation.getRequestBody().getContent();
+                if (content == null) continue;
+                for (io.swagger.v3.oas.models.media.MediaType mediaType : content.values()) {
+                    Schema<?> schema = mediaType.getSchema();
+                    if (schema == null) continue;
+                    collectRequestBodySchemas(schema, openAPI);
+                }
+            }
+        }
+    }
+
+    private void collectRequestBodySchemas(Schema<?> schema, OpenAPI openAPI) {
+        if (schema.get$ref() != null) {
+            String ref = ModelUtils.getSimpleRef(schema.get$ref());
+            requestBodyModelNames.add(ref);
+            // Resolve and recurse to find oneOf children
+            Schema<?> resolved = ModelUtils.getSchema(openAPI, ref);
+            if (resolved != null) {
+                collectRequestBodySchemas(resolved, openAPI);
+            }
+        }
+        if (schema.getOneOf() != null) {
+            for (Object oneOf : schema.getOneOf()) {
+                if (oneOf instanceof Schema) {
+                    collectRequestBodySchemas((Schema<?>) oneOf, openAPI);
+                }
+            }
+        }
+        if (schema.getAllOf() != null) {
+            for (Object allOf : schema.getAllOf()) {
+                if (allOf instanceof Schema) {
+                    collectRequestBodySchemas((Schema<?>) allOf, openAPI);
+                }
+            }
+        }
+    }
+
+    @Override
+    public Map<String, ModelsMap> postProcessAllModels(Map<String, ModelsMap> objs) {
+        Map<String, ModelsMap> result = super.postProcessAllModels(objs);
+        for (Map.Entry<String, ModelsMap> entry : result.entrySet()) {
+            CodegenModel model = ModelUtils.getModelByName(entry.getKey(), result);
+            if (model != null && requestBodyModelNames.contains(model.name)) {
+                model.vendorExtensions.put("x-is-request-body", true);
+            }
+        }
+        return result;
     }
 
     @Override

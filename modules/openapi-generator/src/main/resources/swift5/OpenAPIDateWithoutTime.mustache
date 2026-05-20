@@ -15,21 +15,21 @@ import Foundation
 /// an appropriate padding in order to transform to GMT+0 which is the assumed timezone in ISO 8601. 
 /// When decoding, GMT+0 can be assumed (again: ISO8601) so there is no padding necessary and wrappedDate 
 /// can be used safely.
-{{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}public{{/nonPublicApi}} struct OpenAPIDateWithoutTime: Codable, Hashable, Equatable {
-    {{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}public{{/nonPublicApi}} let wrappedDate: Date
-    {{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}public{{/nonPublicApi}} let timezone: TimeZone
+public struct OpenAPIDateWithoutTime: Codable, Hashable, Equatable {
+    public let wrappedDate: Date
+    public let timezone: TimeZone
     
-    {{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}public{{/nonPublicApi}} enum CodingKeys: CodingKey, CaseIterable {
+    public enum CodingKeys: CodingKey, CaseIterable {
         case wrappedDate
         case timezone
     }
 
-    {{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}public{{/nonPublicApi}} enum DecodingError: Error {
+    public enum DecodingError: Error {
         case notADateString
     }
     
     /// On decoding ISO8601 timezone is assumed
-    {{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}public{{/nonPublicApi}} init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
 
         let dateString = try container.decode(String.self)
@@ -42,7 +42,7 @@ import Foundation
     }
 
     /// Convenience Initializer which is useful when dealing with optionals a lot like e.g. in API mappers
-    {{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}public{{/nonPublicApi}} init?(wrappedDate: Date?, timezone: TimeZone = .current) {
+    public init?(wrappedDate: Date?, timezone: TimeZone = .current) {
         guard let wrappedDate = wrappedDate else {
             return nil
         }
@@ -54,13 +54,13 @@ import Foundation
     ///
     /// Since usually `Date`s without time components - as e.g. birthdays - are created Calendar- and timezone-aware
     // it is important to also provide a timezone so that the generator is able to normalize the supplied Date to ISO8601 (GMT+0)
-    {{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}public{{/nonPublicApi}} init(wrappedDate: Date, timezone: TimeZone) {
+    public init(wrappedDate: Date, timezone: TimeZone) {
         self.wrappedDate = wrappedDate
         self.timezone = timezone
     }
     
     /// Only the wrappedDate is encoded normalized to GMT+0 with an offset derived from the supplied Timezone
-    {{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}public{{/nonPublicApi}} func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         try container.encode(OpenISO8601DateFormatter.withoutTime.string(from: normalizedWrappedDate()))
     }
@@ -71,7 +71,7 @@ import Foundation
             Double(timezone.secondsFromGMT(for: wrappedDate)))
     }
 
-    {{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}public{{/nonPublicApi}} static func == (lhs: Self, rhs: Self) -> Bool {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
         Calendar.current.compare(lhs.wrappedDate, to: rhs.wrappedDate, toGranularity: .day) == .orderedSame
     }
 }

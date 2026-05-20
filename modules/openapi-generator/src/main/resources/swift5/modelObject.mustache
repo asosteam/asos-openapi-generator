@@ -30,6 +30,44 @@ public struct {{{classname}}}: Equatable, Sendable {
     {{/deprecated}}public let {{{name}}}: {{#vendorExtensions.x-null-encodable}}NullEncodable<{{{datatype}}}>{{/vendorExtensions.x-null-encodable}}{{^vendorExtensions.x-null-encodable}}{{{datatype}}}{{#required}}{{#isNullable}}?{{/isNullable}}{{/required}}{{^required}}?{{/required}}{{/vendorExtensions.x-null-encodable}}{{#defaultValue}} = {{#vendorExtensions.x-null-encodable}}{{{vendorExtensions.x-null-encodable-default-value}}}{{/vendorExtensions.x-null-encodable}}{{^vendorExtensions.x-null-encodable}}{{{.}}}{{/vendorExtensions.x-null-encodable}}{{/defaultValue}}
 {{/isEnum}}
 {{/allVars}}
+{{#publicMemberwiseInit}}
+
+    // MARK: - Constructor
+
+{{#vendorExtensions.x-has-multiple-vars}}
+    public init(
+        {{#allVars}}
+        {{{name}}}: {{#vendorExtensions.x-null-encodable}}NullEncodable<{{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{/isEnum}}>{{/vendorExtensions.x-null-encodable}}{{^vendorExtensions.x-null-encodable}}{{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{/isEnum}}{{#required}}{{#isNullable}}?{{/isNullable}}{{/required}}{{^required}}?{{/required}}{{/vendorExtensions.x-null-encodable}}{{#defaultValue}} = {{#vendorExtensions.x-null-encodable}}{{{vendorExtensions.x-null-encodable-default-value}}}{{/vendorExtensions.x-null-encodable}}{{^vendorExtensions.x-null-encodable}}{{{.}}}{{/vendorExtensions.x-null-encodable}}{{/defaultValue}}{{^-last}},{{/-last}}
+        {{/allVars}}
+    ) {
+{{/vendorExtensions.x-has-multiple-vars}}
+{{^vendorExtensions.x-has-multiple-vars}}
+    public init({{#allVars}}{{{name}}}: {{#vendorExtensions.x-null-encodable}}NullEncodable<{{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{/isEnum}}>{{/vendorExtensions.x-null-encodable}}{{^vendorExtensions.x-null-encodable}}{{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{/isEnum}}{{#required}}{{#isNullable}}?{{/isNullable}}{{/required}}{{^required}}?{{/required}}{{/vendorExtensions.x-null-encodable}}{{#defaultValue}} = {{#vendorExtensions.x-null-encodable}}{{{vendorExtensions.x-null-encodable-default-value}}}{{/vendorExtensions.x-null-encodable}}{{^vendorExtensions.x-null-encodable}}{{{.}}}{{/vendorExtensions.x-null-encodable}}{{/defaultValue}}{{/allVars}}) {
+{{/vendorExtensions.x-has-multiple-vars}}
+        {{#allVars}}
+        self.{{{name}}} = {{{name}}}
+        {{/allVars}}
+    }
+{{/publicMemberwiseInit}}
+{{^publicMemberwiseInit}}{{#vendorExtensions.x-is-request-body}}
+
+    // MARK: - Constructor
+
+{{#vendorExtensions.x-has-multiple-vars}}
+    public init(
+        {{#allVars}}
+        {{{name}}}: {{#vendorExtensions.x-null-encodable}}NullEncodable<{{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{/isEnum}}>{{/vendorExtensions.x-null-encodable}}{{^vendorExtensions.x-null-encodable}}{{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{/isEnum}}{{#required}}{{#isNullable}}?{{/isNullable}}{{/required}}{{^required}}?{{/required}}{{/vendorExtensions.x-null-encodable}}{{#defaultValue}} = {{#vendorExtensions.x-null-encodable}}{{{vendorExtensions.x-null-encodable-default-value}}}{{/vendorExtensions.x-null-encodable}}{{^vendorExtensions.x-null-encodable}}{{{.}}}{{/vendorExtensions.x-null-encodable}}{{/defaultValue}}{{^-last}},{{/-last}}
+        {{/allVars}}
+    ) {
+{{/vendorExtensions.x-has-multiple-vars}}
+{{^vendorExtensions.x-has-multiple-vars}}
+    public init({{#allVars}}{{{name}}}: {{#vendorExtensions.x-null-encodable}}NullEncodable<{{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{/isEnum}}>{{/vendorExtensions.x-null-encodable}}{{^vendorExtensions.x-null-encodable}}{{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{/isEnum}}{{#required}}{{#isNullable}}?{{/isNullable}}{{/required}}{{^required}}?{{/required}}{{/vendorExtensions.x-null-encodable}}{{#defaultValue}} = {{#vendorExtensions.x-null-encodable}}{{{vendorExtensions.x-null-encodable-default-value}}}{{/vendorExtensions.x-null-encodable}}{{^vendorExtensions.x-null-encodable}}{{{.}}}{{/vendorExtensions.x-null-encodable}}{{/defaultValue}}{{/allVars}}) {
+{{/vendorExtensions.x-has-multiple-vars}}
+        {{#allVars}}
+        self.{{{name}}} = {{{name}}}
+        {{/allVars}}
+    }
+{{/vendorExtensions.x-is-request-body}}{{/publicMemberwiseInit}}
 }
 
 // MARK: - Codable

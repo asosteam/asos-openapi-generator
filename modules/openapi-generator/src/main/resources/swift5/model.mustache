@@ -6,7 +6,7 @@ import Foundation
 {{#swiftUseApiNamespace}}
 
 @available(*, deprecated, renamed: "{{projectName}}API.{{classname}}")
-{{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}public{{/nonPublicApi}} typealias {{classname}} = {{projectName}}API.{{classname}}
+public typealias {{classname}} = {{projectName}}API.{{classname}}
 extension {{projectName}}API {
 {{/swiftUseApiNamespace}}
 {{#description}}

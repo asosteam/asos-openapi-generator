@@ -1,11 +1,15 @@
-{{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}public{{/nonPublicApi}} enum {{classname}}: {{#useVapor}}Content{{/useVapor}}{{^useVapor}}Codable, JSONEncodable{{#vendorExtensions.x-swift-hashable}}, Hashable{{/vendorExtensions.x-swift-hashable}}{{/useVapor}} {
+public enum {{classname}}: Equatable, Sendable {
     {{#oneOf}}
     case type{{.}}({{.}})
     {{/oneOf}}
     {{#oneOfUnknownDefaultCase}}
     case unknownDefaultOpenApi
     {{/oneOfUnknownDefaultCase}}
+}
 
+// MARK: - Codable
+
+extension {{classname}}: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         switch self {
@@ -14,7 +18,7 @@
             try container.encode(value)
         {{/oneOf}}
         {{#oneOfUnknownDefaultCase}}
-        case unknownDefaultOpenApi(let type):
+        case .unknownDefaultOpenApi:
             try container.encodeNil()
         {{/oneOfUnknownDefaultCase}}
         }
