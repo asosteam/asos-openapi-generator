@@ -1,0 +1,81 @@
+public struct {{{classname}}}: Equatable, Sendable {
+    // MARK: - Properties
+{{#allVars}}
+{{#isEnum}}
+{{> modelInlineEnumDeclaration}}
+{{/isEnum}}
+{{/allVars}}
+{{#allVars}}
+{{#validatable}}
+{{#hasValidation}}
+{{#isString}}
+    static let {{{name}}}Rule = StringRule(minLength: {{#minLength}}{{{.}}}{{/minLength}}{{^minLength}}nil{{/minLength}}, maxLength: {{#maxLength}}{{{.}}}{{/maxLength}}{{^maxLength}}nil{{/maxLength}}, pattern: {{#pattern}}"{{{.}}}"{{/pattern}}{{^pattern}}nil{{/pattern}})
+{{/isString}}
+{{#isNumeric}}
+    static let {{{name}}}Rule = NumericRule<{{{dataType}}}>(minimum: {{#minimum}}{{{.}}}{{/minimum}}{{^minimum}}nil{{/minimum}}, exclusiveMinimum: {{#exclusiveMinimum}}true{{/exclusiveMinimum}}{{^exclusiveMinimum}}false{{/exclusiveMinimum}}, maximum: {{#maximum}}{{{.}}}{{/maximum}}{{^maximum}}nil{{/maximum}}, exclusiveMaximum: {{#exclusiveMaximum}}true{{/exclusiveMaximum}}{{^exclusiveMaximum}}false{{/exclusiveMaximum}}, multipleOf: {{#multipleOf}}{{{.}}}{{/multipleOf}}{{^multipleOf}}nil{{/multipleOf}})
+{{/isNumeric}}
+{{/hasValidation}}
+{{/validatable}}
+{{/allVars}}
+{{#allVars}}
+
+{{#isEnum}}
+    {{#description}}/// {{{.}}}
+    {{/description}}{{#deprecated}}@available(*, deprecated, message: "This property is deprecated.")
+    {{/deprecated}}public let {{{name}}}: {{#vendorExtensions.x-null-encodable}}NullEncodable<{{{datatypeWithEnum}}}>{{/vendorExtensions.x-null-encodable}}{{^vendorExtensions.x-null-encodable}}{{{datatypeWithEnum}}}{{#required}}{{#isNullable}}?{{/isNullable}}{{/required}}{{^required}}?{{/required}}{{/vendorExtensions.x-null-encodable}}{{#defaultValue}} = {{#vendorExtensions.x-null-encodable}}{{{vendorExtensions.x-null-encodable-default-value}}}{{/vendorExtensions.x-null-encodable}}{{^vendorExtensions.x-null-encodable}}{{{.}}}{{/vendorExtensions.x-null-encodable}}{{/defaultValue}}
+{{/isEnum}}
+{{^isEnum}}
+    {{#description}}/// {{{.}}}
+    {{/description}}{{#deprecated}}@available(*, deprecated, message: "This property is deprecated.")
+    {{/deprecated}}public let {{{name}}}: {{#vendorExtensions.x-null-encodable}}NullEncodable<{{{datatype}}}>{{/vendorExtensions.x-null-encodable}}{{^vendorExtensions.x-null-encodable}}{{{datatype}}}{{#required}}{{#isNullable}}?{{/isNullable}}{{/required}}{{^required}}?{{/required}}{{/vendorExtensions.x-null-encodable}}{{#defaultValue}} = {{#vendorExtensions.x-null-encodable}}{{{vendorExtensions.x-null-encodable-default-value}}}{{/vendorExtensions.x-null-encodable}}{{^vendorExtensions.x-null-encodable}}{{{.}}}{{/vendorExtensions.x-null-encodable}}{{/defaultValue}}
+{{/isEnum}}
+{{/allVars}}
+{{#publicMemberwiseInit}}
+
+    // MARK: - Constructor
+
+{{#vendorExtensions.x-has-multiple-vars}}
+    public init(
+        {{#allVars}}
+        {{{name}}}: {{#vendorExtensions.x-null-encodable}}NullEncodable<{{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{/isEnum}}>{{/vendorExtensions.x-null-encodable}}{{^vendorExtensions.x-null-encodable}}{{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{/isEnum}}{{#required}}{{#isNullable}}?{{/isNullable}}{{/required}}{{^required}}?{{/required}}{{/vendorExtensions.x-null-encodable}}{{#defaultValue}} = {{#vendorExtensions.x-null-encodable}}{{{vendorExtensions.x-null-encodable-default-value}}}{{/vendorExtensions.x-null-encodable}}{{^vendorExtensions.x-null-encodable}}{{{.}}}{{/vendorExtensions.x-null-encodable}}{{/defaultValue}}{{^-last}},{{/-last}}
+        {{/allVars}}
+    ) {
+{{/vendorExtensions.x-has-multiple-vars}}
+{{^vendorExtensions.x-has-multiple-vars}}
+    public init({{#allVars}}{{{name}}}: {{#vendorExtensions.x-null-encodable}}NullEncodable<{{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{/isEnum}}>{{/vendorExtensions.x-null-encodable}}{{^vendorExtensions.x-null-encodable}}{{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{/isEnum}}{{#required}}{{#isNullable}}?{{/isNullable}}{{/required}}{{^required}}?{{/required}}{{/vendorExtensions.x-null-encodable}}{{#defaultValue}} = {{#vendorExtensions.x-null-encodable}}{{{vendorExtensions.x-null-encodable-default-value}}}{{/vendorExtensions.x-null-encodable}}{{^vendorExtensions.x-null-encodable}}{{{.}}}{{/vendorExtensions.x-null-encodable}}{{/defaultValue}}{{/allVars}}) {
+{{/vendorExtensions.x-has-multiple-vars}}
+        {{#allVars}}
+        self.{{{name}}} = {{{name}}}
+        {{/allVars}}
+    }
+{{/publicMemberwiseInit}}
+{{^publicMemberwiseInit}}{{#vendorExtensions.x-is-request-body}}
+
+    // MARK: - Constructor
+
+{{#vendorExtensions.x-has-multiple-vars}}
+    public init(
+        {{#allVars}}
+        {{{name}}}: {{#vendorExtensions.x-null-encodable}}NullEncodable<{{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{/isEnum}}>{{/vendorExtensions.x-null-encodable}}{{^vendorExtensions.x-null-encodable}}{{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{/isEnum}}{{#required}}{{#isNullable}}?{{/isNullable}}{{/required}}{{^required}}?{{/required}}{{/vendorExtensions.x-null-encodable}}{{#defaultValue}} = {{#vendorExtensions.x-null-encodable}}{{{vendorExtensions.x-null-encodable-default-value}}}{{/vendorExtensions.x-null-encodable}}{{^vendorExtensions.x-null-encodable}}{{{.}}}{{/vendorExtensions.x-null-encodable}}{{/defaultValue}}{{^-last}},{{/-last}}
+        {{/allVars}}
+    ) {
+{{/vendorExtensions.x-has-multiple-vars}}
+{{^vendorExtensions.x-has-multiple-vars}}
+    public init({{#allVars}}{{{name}}}: {{#vendorExtensions.x-null-encodable}}NullEncodable<{{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{/isEnum}}>{{/vendorExtensions.x-null-encodable}}{{^vendorExtensions.x-null-encodable}}{{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{/isEnum}}{{#required}}{{#isNullable}}?{{/isNullable}}{{/required}}{{^required}}?{{/required}}{{/vendorExtensions.x-null-encodable}}{{#defaultValue}} = {{#vendorExtensions.x-null-encodable}}{{{vendorExtensions.x-null-encodable-default-value}}}{{/vendorExtensions.x-null-encodable}}{{^vendorExtensions.x-null-encodable}}{{{.}}}{{/vendorExtensions.x-null-encodable}}{{/defaultValue}}{{/allVars}}) {
+{{/vendorExtensions.x-has-multiple-vars}}
+        {{#allVars}}
+        self.{{{name}}} = {{{name}}}
+        {{/allVars}}
+    }
+{{/vendorExtensions.x-is-request-body}}{{/publicMemberwiseInit}}
+}
+
+// MARK: - Codable
+
+extension {{{classname}}}: Codable {{#vendorExtensions.x-codegen-has-escaped-property-names}}{
+    private enum CodingKeys: {{#hasVars}}String, {{/hasVars}}CodingKey {
+        {{#allVars}}
+        case {{{name}}}{{#vendorExtensions.x-codegen-escaped-property-name}} = "{{{baseName}}}"{{/vendorExtensions.x-codegen-escaped-property-name}}
+        {{/allVars}}
+    }
+}{{/vendorExtensions.x-codegen-has-escaped-property-names}}{{^vendorExtensions.x-codegen-has-escaped-property-names}}{}{{/vendorExtensions.x-codegen-has-escaped-property-names}}

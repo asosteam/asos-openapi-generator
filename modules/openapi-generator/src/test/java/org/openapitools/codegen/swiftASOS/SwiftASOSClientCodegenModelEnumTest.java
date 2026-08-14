@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.openapitools.codegen.swift5;
+package org.openapitools.codegen.swiftASOS;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.IntegerSchema;
@@ -26,7 +26,7 @@ import org.openapitools.codegen.CodegenModel;
 import org.openapitools.codegen.CodegenProperty;
 import org.openapitools.codegen.DefaultCodegen;
 import org.openapitools.codegen.TestUtils;
-import org.openapitools.codegen.languages.Swift5ClientCodegen;
+import org.openapitools.codegen.languages.SwiftASOSClientCodegen;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -34,15 +34,16 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 
 @SuppressWarnings("static-method")
-public class Swift5ModelEnumTest {
-    @Test(description = "convert a java model with a string enum and a default value")
+public class SwiftASOSClientCodegenModelEnumTest {
+
+    @Test(description = "convert a model with a string enum and a default value")
     public void convertStringDefaultValueTest() {
         final StringSchema enumSchema = new StringSchema();
         enumSchema.setEnum(Arrays.asList("VALUE1", "VALUE2", "VALUE3"));
         enumSchema.setDefault("VALUE2");
         final Schema model = new Schema().type("object").addProperty("name", enumSchema);
 
-        final DefaultCodegen codegen = new Swift5ClientCodegen();
+        final DefaultCodegen codegen = new SwiftASOSClientCodegen();
         OpenAPI openAPI = TestUtils.createOpenAPIWithOneSchema("sample", model);
         codegen.setOpenAPI(openAPI);
         final CodegenModel cm = codegen.fromModel("sample", model);
@@ -59,14 +60,14 @@ public class Swift5ModelEnumTest {
         Assert.assertTrue(enumVar.isEnum);
     }
 
-    @Test(description = "convert a java model with a reserved word string enum and a default value")
+    @Test(description = "convert a model with a reserved word string enum and a default value")
     public void convertReservedWordStringDefaultValueTest() {
         final StringSchema enumSchema = new StringSchema();
         enumSchema.setEnum(Arrays.asList("1st", "2nd", "3rd"));
         enumSchema.setDefault("2nd");
         final Schema model = new Schema().type("object").addProperty("name", enumSchema);
 
-        final DefaultCodegen codegen = new Swift5ClientCodegen();
+        final DefaultCodegen codegen = new SwiftASOSClientCodegen();
         OpenAPI openAPI = TestUtils.createOpenAPIWithOneSchema("sample", model);
         codegen.setOpenAPI(openAPI);
         final CodegenModel cm = codegen.fromModel("sample", model);
@@ -83,14 +84,14 @@ public class Swift5ModelEnumTest {
         Assert.assertTrue(enumVar.isEnum);
     }
 
-    @Test(description = "convert a java model with an integer enum and a default value")
+    @Test(description = "convert a model with an integer enum and a default value")
     public void convertIntegerDefaultValueTest() {
         final IntegerSchema enumSchema = new IntegerSchema();
         enumSchema.setEnum(Arrays.asList(1, 2, 3));
         enumSchema.setDefault(2);
         final Schema model = new Schema().type("object").addProperty("name", enumSchema);
 
-        final DefaultCodegen codegen = new Swift5ClientCodegen();
+        final DefaultCodegen codegen = new SwiftASOSClientCodegen();
         OpenAPI openAPI = TestUtils.createOpenAPIWithOneSchema("sample", model);
         codegen.setOpenAPI(openAPI);
         final CodegenModel cm = codegen.fromModel("sample", model);
@@ -107,14 +108,14 @@ public class Swift5ModelEnumTest {
         Assert.assertTrue(enumVar.isEnum);
     }
 
-    @Test(description = "convert a java model with a number enum and a default value")
+    @Test(description = "convert a model with a number enum and a default value")
     public void convertNumberDefaultValueTest() {
         final NumberSchema enumSchema = new NumberSchema();
         enumSchema.setEnum(Arrays.asList(new BigDecimal(10), new BigDecimal(100), new BigDecimal(1000)));
-        enumSchema.setDefault(new BigDecimal((100)));
+        enumSchema.setDefault(new BigDecimal(100));
         final Schema model = new Schema().type("object").addProperty("name", enumSchema);
 
-        final DefaultCodegen codegen = new Swift5ClientCodegen();
+        final DefaultCodegen codegen = new SwiftASOSClientCodegen();
         OpenAPI openAPI = TestUtils.createOpenAPIWithOneSchema("sample", model);
         codegen.setOpenAPI(openAPI);
         final CodegenModel cm = codegen.fromModel("sample", model);
@@ -131,21 +132,16 @@ public class Swift5ModelEnumTest {
         Assert.assertTrue(enumVar.isEnum);
     }
 
-    @Test(description = "convert a java model with additional replacements")
+    @Test(description = "Id→ID, Url→URL and Asos→ASOS replacements are applied to enum var names")
     public void convertAdditionalReplacementsTest() {
-        final StringSchema enumSchema = new StringSchema();
-        enumSchema.setEnum(Arrays.asList("ValueId", "ValueUrl", "id", "url"));
-        enumSchema.setDefault("ValueId");
+        final DefaultCodegen codegen = new SwiftASOSClientCodegen();
 
-        final Schema model = new Schema().type("object").addProperty("ModelTest", enumSchema);
-
-        final DefaultCodegen codegen = new Swift5ClientCodegen();
-        OpenAPI openAPI = TestUtils.createOpenAPIWithOneSchema("sample", model);
-        codegen.setOpenAPI(openAPI);
-
-        // Verify Id→ID and Url→URL replacements are applied via toEnumVarName
+        // Uppercase-starting values hit the camelized branch so replacements apply
         Assert.assertEquals(codegen.toEnumVarName("ValueId", "String"), "valueID");
         Assert.assertEquals(codegen.toEnumVarName("ValueUrl", "String"), "valueURL");
+        Assert.assertEquals(codegen.toEnumVarName("ValueAsos", "String"), "valueASOS");
+
+        // Lowercase-starting values are lowercased fully first — no replacement fires
         Assert.assertEquals(codegen.toEnumVarName("id", "String"), "id");
         Assert.assertEquals(codegen.toEnumVarName("url", "String"), "url");
     }

@@ -203,16 +203,8 @@ public class Swift5ClientCodegenTest {
     public void replacementTest() {
         DefaultCodegen codegen = new Swift5ClientCodegen();
 
-        codegen.setModelNamePrefix("Asos");
-        String result = codegen.toModelName("Error");
-        Assert.assertEquals(result, "ASOSError");
-
-        codegen.setModelNamePrefix("asos");
-        result = codegen.toModelName("Error");
-        Assert.assertEquals(result, "ASOSError");
-
         codegen.setModelNamePrefix("Id");
-        result = codegen.toModelName("Object");
+        String result = codegen.toModelName("Object");
         Assert.assertEquals(result, "IDObject");
 
         codegen.setModelNamePrefix("id");

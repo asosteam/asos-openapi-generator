@@ -1,0 +1,22 @@
+{{#models}}{{#model}}//
+// Copyright © {{generatedYear}} ASOS. All rights reserved.
+//
+
+import Foundation
+{{#swiftUseApiNamespace}}
+
+@available(*, deprecated, renamed: "{{projectName}}API.{{classname}}")
+public typealias {{classname}} = {{projectName}}API.{{classname}}
+extension {{projectName}}API {
+{{/swiftUseApiNamespace}}
+{{#description}}
+
+/// {{{.}}}{{/description}}{{#isDeprecated}}
+@available(*, deprecated, message: "This schema is deprecated."){{/isDeprecated}}{{#vendorExtensions.x-is-one-of-interface}}
+{{> modelOneOf}}{{/vendorExtensions.x-is-one-of-interface}}{{^vendorExtensions.x-is-one-of-interface}}{{#isArray}}
+{{> modelArray}}{{/isArray}}{{^isArray}}{{#isEnum}}
+{{> modelEnum}}{{/isEnum}}{{^isEnum}}
+{{> modelObject}}{{/isEnum}}{{/isArray}}{{/vendorExtensions.x-is-one-of-interface}}{{/model}}{{/models}}
+{{#swiftUseApiNamespace}}
+}
+{{/swiftUseApiNamespace}}

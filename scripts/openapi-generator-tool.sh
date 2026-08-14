@@ -21,7 +21,7 @@ SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 # Default values
 PROJECT_PATH="$SCRIPT_DIR/.."
 OUTPUT_FOLDER="$SCRIPT_DIR/../out"
-GENERATOR_NAME="swift5"
+GENERATOR_NAME="swiftASOS"
 INPUT_SPEC=""
 TEMPLATE_FOLDER=""
 IGNORE_BUILD=false

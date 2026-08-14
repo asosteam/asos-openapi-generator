@@ -241,7 +241,6 @@ public class StringUtils {
 
     public static String applyExtraFormatting(String input) {
         List<String> replacements = Arrays.asList(
-            "Asos",
             "Id",
             "Url"
         );
