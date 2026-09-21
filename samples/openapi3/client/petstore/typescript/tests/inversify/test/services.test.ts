@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { Container } from "inversify";
 
-import * as petstore from "ts-petstore-client";
+import * as petstore from "@openapitools/typescript-inversify-petstore";
 import * as petstoreInternals from "../../../builds/inversify/dist/apis/PetApi";
 
 import { expect, assert } from "chai";

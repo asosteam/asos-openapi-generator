@@ -11,7 +11,7 @@
     "requirejs": "^2.3.6",
     "rewire": "^4.0.1",
     "ts-node": "^3.3.0",
-    "ts-petstore-client": "file:../../builds/jquery",
+    "@openapitools/jquery-typescript-petstore": "file:../../builds/jquery",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
   },

@@ -4,6 +4,6 @@ inputSpec: modules/openapi-generator/src/test/resources/3_0/petstore.yaml
 templateDir: modules/openapi-generator/src/main/resources/typescript
 additionalProperties:
   framework: jquery
-  npmName: ts-petstore-client
-  projectName: ts-petstore-client
+  npmName: '@openapitools/jquery-typescript-petstore'
+  projectName: jquery-typescript-petstore
   moduleName: petstore

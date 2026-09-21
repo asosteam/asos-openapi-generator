@@ -4,7 +4,7 @@ inputSpec: modules/openapi-generator/src/test/resources/3_0/petstore.yaml
 templateDir: modules/openapi-generator/src/main/resources/typescript
 additionalProperties:
   framework: fetch-api
-  npmName: ts-petstore-client
-  projectName: ts-petstore-client
+  npmName: '@openapitools/typescript-browser-petstore'
+  projectName: typescript-browser-petstore
   moduleName: petstore
   supportsES6: true

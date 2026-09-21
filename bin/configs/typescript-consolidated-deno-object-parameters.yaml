@@ -4,7 +4,7 @@ inputSpec: modules/openapi-generator/src/test/resources/3_0/petstore.yaml
 templateDir: modules/openapi-generator/src/main/resources/typescript
 additionalProperties:
   platform: deno
-  npmName: ts-petstore-client
+  npmName: '@openapitools/typescript-deno-object-parameters-petstore'
   useObjectParameters: true
-  projectName: ts-petstore-client
+  projectName: typescript-deno-object-parameters-petstore
   moduleName: petstore

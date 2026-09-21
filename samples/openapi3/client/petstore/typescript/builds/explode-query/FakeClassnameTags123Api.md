@@ -16,8 +16,8 @@ To test class name in snake case
 
 
 ```typescript
-import { createConfiguration, FakeClassnameTags123Api } from 'ts-petstore-client';
-import type { FakeClassnameTags123ApiTestClassnameRequest } from 'ts-petstore-client';
+import { createConfiguration, FakeClassnameTags123Api } from '@openapitools/typescript-explode-query-petstore';
+import type { FakeClassnameTags123ApiTestClassnameRequest } from '@openapitools/typescript-explode-query-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new FakeClassnameTags123Api(configuration);
