@@ -19,8 +19,8 @@ For valid response try integer IDs with value < 1000. Anything above 1000 or non
 
 
 ```typescript
-import { createConfiguration, StoreApi } from 'ts-petstore-client';
-import type { StoreApiDeleteOrderRequest } from 'ts-petstore-client';
+import { createConfiguration, StoreApi } from '@openapitools/typescript-explode-query-petstore';
+import type { StoreApiDeleteOrderRequest } from '@openapitools/typescript-explode-query-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new StoreApi(configuration);
@@ -73,7 +73,7 @@ Returns a map of status codes to quantities
 
 
 ```typescript
-import { createConfiguration, StoreApi } from 'ts-petstore-client';
+import { createConfiguration, StoreApi } from '@openapitools/typescript-explode-query-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new StoreApi(configuration);
@@ -119,8 +119,8 @@ For valid response try integer IDs with value <= 5 or > 10. Other values will ge
 
 
 ```typescript
-import { createConfiguration, StoreApi } from 'ts-petstore-client';
-import type { StoreApiGetOrderByIdRequest } from 'ts-petstore-client';
+import { createConfiguration, StoreApi } from '@openapitools/typescript-explode-query-petstore';
+import type { StoreApiGetOrderByIdRequest } from '@openapitools/typescript-explode-query-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new StoreApi(configuration);
@@ -174,8 +174,8 @@ No authorization required
 
 
 ```typescript
-import { createConfiguration, StoreApi } from 'ts-petstore-client';
-import type { StoreApiPlaceOrderRequest } from 'ts-petstore-client';
+import { createConfiguration, StoreApi } from '@openapitools/typescript-explode-query-petstore';
+import type { StoreApiPlaceOrderRequest } from '@openapitools/typescript-explode-query-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new StoreApi(configuration);

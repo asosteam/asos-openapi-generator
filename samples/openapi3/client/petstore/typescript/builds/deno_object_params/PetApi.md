@@ -23,8 +23,8 @@ Method | HTTP request | Description
 
 
 ```typescript
-import { createConfiguration, PetApi } from 'ts-petstore-client';
-import type { PetApiAddPetRequest } from 'ts-petstore-client';
+import { createConfiguration, PetApi } from '@openapitools/typescript-deno-object-parameters-petstore';
+import type { PetApiAddPetRequest } from '@openapitools/typescript-deno-object-parameters-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new PetApi(configuration);
@@ -94,8 +94,8 @@ Name | Type | Description  | Notes
 
 
 ```typescript
-import { createConfiguration, PetApi } from 'ts-petstore-client';
-import type { PetApiDeletePetRequest } from 'ts-petstore-client';
+import { createConfiguration, PetApi } from '@openapitools/typescript-deno-object-parameters-petstore';
+import type { PetApiDeletePetRequest } from '@openapitools/typescript-deno-object-parameters-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new PetApi(configuration);
@@ -150,8 +150,8 @@ Multiple status values can be provided with comma separated strings
 
 
 ```typescript
-import { createConfiguration, PetApi } from 'ts-petstore-client';
-import type { PetApiFindPetsByStatusRequest } from 'ts-petstore-client';
+import { createConfiguration, PetApi } from '@openapitools/typescript-deno-object-parameters-petstore';
+import type { PetApiFindPetsByStatusRequest } from '@openapitools/typescript-deno-object-parameters-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new PetApi(configuration);
@@ -206,8 +206,8 @@ Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3
 
 
 ```typescript
-import { createConfiguration, PetApi } from 'ts-petstore-client';
-import type { PetApiFindPetsByTagsRequest } from 'ts-petstore-client';
+import { createConfiguration, PetApi } from '@openapitools/typescript-deno-object-parameters-petstore';
+import type { PetApiFindPetsByTagsRequest } from '@openapitools/typescript-deno-object-parameters-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new PetApi(configuration);
@@ -262,8 +262,8 @@ Returns a single pet
 
 
 ```typescript
-import { createConfiguration, PetApi } from 'ts-petstore-client';
-import type { PetApiGetPetByIdRequest } from 'ts-petstore-client';
+import { createConfiguration, PetApi } from '@openapitools/typescript-deno-object-parameters-petstore';
+import type { PetApiGetPetByIdRequest } from '@openapitools/typescript-deno-object-parameters-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new PetApi(configuration);
@@ -317,8 +317,8 @@ Name | Type | Description  | Notes
 
 
 ```typescript
-import { createConfiguration, PetApi } from 'ts-petstore-client';
-import type { PetApiUpdatePetRequest } from 'ts-petstore-client';
+import { createConfiguration, PetApi } from '@openapitools/typescript-deno-object-parameters-petstore';
+import type { PetApiUpdatePetRequest } from '@openapitools/typescript-deno-object-parameters-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new PetApi(configuration);
@@ -390,8 +390,8 @@ Name | Type | Description  | Notes
 
 
 ```typescript
-import { createConfiguration, PetApi } from 'ts-petstore-client';
-import type { PetApiUpdatePetWithFormRequest } from 'ts-petstore-client';
+import { createConfiguration, PetApi } from '@openapitools/typescript-deno-object-parameters-petstore';
+import type { PetApiUpdatePetWithFormRequest } from '@openapitools/typescript-deno-object-parameters-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new PetApi(configuration);
@@ -449,8 +449,8 @@ void (empty response body)
 
 
 ```typescript
-import { createConfiguration, PetApi } from 'ts-petstore-client';
-import type { PetApiUploadFileRequest } from 'ts-petstore-client';
+import { createConfiguration, PetApi } from '@openapitools/typescript-deno-object-parameters-petstore';
+import type { PetApiUploadFileRequest } from '@openapitools/typescript-deno-object-parameters-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new PetApi(configuration);

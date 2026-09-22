@@ -1,4 +1,4 @@
-import * as petstore from 'ts-petstore-client'
+import * as petstore from '@openapitools/typescript-node-object-parameters-petstore'
 
 import { expect, assert } from "chai";
 import * as fs from 'fs';

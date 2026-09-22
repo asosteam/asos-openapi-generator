@@ -1,6 +1,6 @@
 declare var QUnit: any;
 
-import * as petstore from "ts-petstore-client";
+import * as petstore from "@openapitools/jquery-typescript-petstore";
 
 let libs: { [key: string]: petstore.HttpLibrary } = {
     "jquery": new petstore.JQueryHttpLibrary()

@@ -7,7 +7,7 @@
     "reflect-metadata": "^0.1.13",
     "rewire": "^4.0.1",
     "ts-node": "^8.10.2",
-    "ts-petstore-client": "file:../../builds/inversify"
+    "@openapitools/typescript-inversify-petstore": "file:../../builds/inversify"
   },
   "scripts": {
     "test": "mocha test/**/*.test.ts test/*.test.ts -r ts-node/register --timeout 10000",

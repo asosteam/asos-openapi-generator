@@ -2,7 +2,7 @@
 // commenting out below tests for the time being since the requests consistently timeout
 
 import { expect } from '@esm-bundle/chai';
-import * as petstore from "ts-petstore-client";
+import * as petstore from "@openapitools/typescript-browser-petstore";
 
 let libs: { [key: string]: petstore.HttpLibrary } = {
     "isomorphic-fetch": new petstore.IsomorphicFetchHttpLibrary()

@@ -4,7 +4,7 @@ inputSpec: modules/openapi-generator/src/test/resources/3_0/petstore.yaml
 templateDir: modules/openapi-generator/src/main/resources/typescript
 additionalProperties:
   platform: node
-  npmName: ts-petstore-client
+  npmName: '@openapitools/typescript-inversify-petstore'
   useInversify: true
-  projectName: ts-petstore-client
+  projectName: typescript-inversify-petstore
   moduleName: petstore

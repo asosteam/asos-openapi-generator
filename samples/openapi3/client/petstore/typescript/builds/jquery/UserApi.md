@@ -23,8 +23,8 @@ This can only be done by the logged in user.
 
 
 ```typescript
-import { createConfiguration, UserApi } from 'ts-petstore-client';
-import type { UserApiCreateUserRequest } from 'ts-petstore-client';
+import { createConfiguration, UserApi } from '@openapitools/jquery-typescript-petstore';
+import type { UserApiCreateUserRequest } from '@openapitools/jquery-typescript-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new UserApi(configuration);
@@ -85,8 +85,8 @@ void (empty response body)
 
 
 ```typescript
-import { createConfiguration, UserApi } from 'ts-petstore-client';
-import type { UserApiCreateUsersWithArrayInputRequest } from 'ts-petstore-client';
+import { createConfiguration, UserApi } from '@openapitools/jquery-typescript-petstore';
+import type { UserApiCreateUsersWithArrayInputRequest } from '@openapitools/jquery-typescript-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new UserApi(configuration);
@@ -149,8 +149,8 @@ void (empty response body)
 
 
 ```typescript
-import { createConfiguration, UserApi } from 'ts-petstore-client';
-import type { UserApiCreateUsersWithListInputRequest } from 'ts-petstore-client';
+import { createConfiguration, UserApi } from '@openapitools/jquery-typescript-petstore';
+import type { UserApiCreateUsersWithListInputRequest } from '@openapitools/jquery-typescript-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new UserApi(configuration);
@@ -213,8 +213,8 @@ This can only be done by the logged in user.
 
 
 ```typescript
-import { createConfiguration, UserApi } from 'ts-petstore-client';
-import type { UserApiDeleteUserRequest } from 'ts-petstore-client';
+import { createConfiguration, UserApi } from '@openapitools/jquery-typescript-petstore';
+import type { UserApiDeleteUserRequest } from '@openapitools/jquery-typescript-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new UserApi(configuration);
@@ -267,8 +267,8 @@ void (empty response body)
 
 
 ```typescript
-import { createConfiguration, UserApi } from 'ts-petstore-client';
-import type { UserApiGetUserByNameRequest } from 'ts-petstore-client';
+import { createConfiguration, UserApi } from '@openapitools/jquery-typescript-petstore';
+import type { UserApiGetUserByNameRequest } from '@openapitools/jquery-typescript-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new UserApi(configuration);
@@ -322,8 +322,8 @@ No authorization required
 
 
 ```typescript
-import { createConfiguration, UserApi } from 'ts-petstore-client';
-import type { UserApiLoginUserRequest } from 'ts-petstore-client';
+import { createConfiguration, UserApi } from '@openapitools/jquery-typescript-petstore';
+import type { UserApiLoginUserRequest } from '@openapitools/jquery-typescript-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new UserApi(configuration);
@@ -379,7 +379,7 @@ No authorization required
 
 
 ```typescript
-import { createConfiguration, UserApi } from 'ts-petstore-client';
+import { createConfiguration, UserApi } from '@openapitools/jquery-typescript-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new UserApi(configuration);
@@ -425,8 +425,8 @@ This can only be done by the logged in user.
 
 
 ```typescript
-import { createConfiguration, UserApi } from 'ts-petstore-client';
-import type { UserApiUpdateUserRequest } from 'ts-petstore-client';
+import { createConfiguration, UserApi } from '@openapitools/jquery-typescript-petstore';
+import type { UserApiUpdateUserRequest } from '@openapitools/jquery-typescript-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new UserApi(configuration);

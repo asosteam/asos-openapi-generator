@@ -16,8 +16,8 @@ To test special tags and operation ID starting with number
 
 
 ```typescript
-import { createConfiguration, AnotherFakeApi } from 'ts-petstore-client';
-import type { AnotherFakeApi123testSpecialTagsRequest } from 'ts-petstore-client';
+import { createConfiguration, AnotherFakeApi } from '@openapitools/typescript-explode-query-petstore';
+import type { AnotherFakeApi123testSpecialTagsRequest } from '@openapitools/typescript-explode-query-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new AnotherFakeApi(configuration);

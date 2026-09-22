@@ -1,4 +1,4 @@
-import * as petstore from "ts-petstore-client";
+import * as petstore from "@openapitools/typescript-node-petstore";
 
 import { expect} from "chai";
 import * as FormData from "form-data";

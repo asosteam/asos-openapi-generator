@@ -1,7 +1,7 @@
 {
-  "name": "ts-petstore-client",
+  "name": "@openapitools/typescript-inversify-petstore",
   "version": "1.0.0",
-  "description": "OpenAPI client for ts-petstore-client",
+  "description": "OpenAPI client for @openapitools/typescript-inversify-petstore",
   "author": "OpenAPI-Generator Contributors",
   "repository": {
     "type": "git",

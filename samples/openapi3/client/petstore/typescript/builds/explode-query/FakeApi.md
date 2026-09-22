@@ -33,7 +33,7 @@ for Java apache and Java native, test toUrlQueryString for maps with BegDecimal 
 
 
 ```typescript
-import { createConfiguration, FakeApi } from 'ts-petstore-client';
+import { createConfiguration, FakeApi } from '@openapitools/typescript-explode-query-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new FakeApi(configuration);
@@ -78,7 +78,7 @@ No authorization required
 
 
 ```typescript
-import { createConfiguration, FakeApi } from 'ts-petstore-client';
+import { createConfiguration, FakeApi } from '@openapitools/typescript-explode-query-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new FakeApi(configuration);
@@ -123,8 +123,8 @@ No authorization required
 
 
 ```typescript
-import { createConfiguration, FakeApi } from 'ts-petstore-client';
-import type { FakeApiFakeHttpSignatureTestRequest } from 'ts-petstore-client';
+import { createConfiguration, FakeApi } from '@openapitools/typescript-explode-query-petstore';
+import type { FakeApiFakeHttpSignatureTestRequest } from '@openapitools/typescript-explode-query-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new FakeApi(configuration);
@@ -199,8 +199,8 @@ Test serialization of outer boolean types
 
 
 ```typescript
-import { createConfiguration, FakeApi } from 'ts-petstore-client';
-import type { FakeApiFakeOuterBooleanSerializeRequest } from 'ts-petstore-client';
+import { createConfiguration, FakeApi } from '@openapitools/typescript-explode-query-petstore';
+import type { FakeApiFakeOuterBooleanSerializeRequest } from '@openapitools/typescript-explode-query-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new FakeApi(configuration);
@@ -252,8 +252,8 @@ Test serialization of object with outer number type
 
 
 ```typescript
-import { createConfiguration, FakeApi } from 'ts-petstore-client';
-import type { FakeApiFakeOuterCompositeSerializeRequest } from 'ts-petstore-client';
+import { createConfiguration, FakeApi } from '@openapitools/typescript-explode-query-petstore';
+import type { FakeApiFakeOuterCompositeSerializeRequest } from '@openapitools/typescript-explode-query-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new FakeApi(configuration);
@@ -309,8 +309,8 @@ Test serialization of outer number types
 
 
 ```typescript
-import { createConfiguration, FakeApi } from 'ts-petstore-client';
-import type { FakeApiFakeOuterNumberSerializeRequest } from 'ts-petstore-client';
+import { createConfiguration, FakeApi } from '@openapitools/typescript-explode-query-petstore';
+import type { FakeApiFakeOuterNumberSerializeRequest } from '@openapitools/typescript-explode-query-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new FakeApi(configuration);
@@ -362,8 +362,8 @@ Test serialization of outer string types
 
 
 ```typescript
-import { createConfiguration, FakeApi } from 'ts-petstore-client';
-import type { FakeApiFakeOuterStringSerializeRequest } from 'ts-petstore-client';
+import { createConfiguration, FakeApi } from '@openapitools/typescript-explode-query-petstore';
+import type { FakeApiFakeOuterStringSerializeRequest } from '@openapitools/typescript-explode-query-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new FakeApi(configuration);
@@ -415,8 +415,8 @@ Test serialization of enum (int) properties with examples
 
 
 ```typescript
-import { createConfiguration, FakeApi } from 'ts-petstore-client';
-import type { FakeApiFakePropertyEnumIntegerSerializeRequest } from 'ts-petstore-client';
+import { createConfiguration, FakeApi } from '@openapitools/typescript-explode-query-petstore';
+import type { FakeApiFakePropertyEnumIntegerSerializeRequest } from '@openapitools/typescript-explode-query-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new FakeApi(configuration);
@@ -470,8 +470,8 @@ For this test, the body has to be a binary file.
 
 
 ```typescript
-import { createConfiguration, FakeApi } from 'ts-petstore-client';
-import type { FakeApiTestBodyWithBinaryRequest } from 'ts-petstore-client';
+import { createConfiguration, FakeApi } from '@openapitools/typescript-explode-query-petstore';
+import type { FakeApiTestBodyWithBinaryRequest } from '@openapitools/typescript-explode-query-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new FakeApi(configuration);
@@ -523,8 +523,8 @@ For this test, the body for this request must reference a schema named `File`.
 
 
 ```typescript
-import { createConfiguration, FakeApi } from 'ts-petstore-client';
-import type { FakeApiTestBodyWithFileSchemaRequest } from 'ts-petstore-client';
+import { createConfiguration, FakeApi } from '@openapitools/typescript-explode-query-petstore';
+import type { FakeApiTestBodyWithFileSchemaRequest } from '@openapitools/typescript-explode-query-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new FakeApi(configuration);
@@ -584,8 +584,8 @@ No authorization required
 
 
 ```typescript
-import { createConfiguration, FakeApi } from 'ts-petstore-client';
-import type { FakeApiTestBodyWithQueryParamsRequest } from 'ts-petstore-client';
+import { createConfiguration, FakeApi } from '@openapitools/typescript-explode-query-petstore';
+import type { FakeApiTestBodyWithQueryParamsRequest } from '@openapitools/typescript-explode-query-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new FakeApi(configuration);
@@ -649,8 +649,8 @@ To test \"client\" model
 
 
 ```typescript
-import { createConfiguration, FakeApi } from 'ts-petstore-client';
-import type { FakeApiTestClientModelRequest } from 'ts-petstore-client';
+import { createConfiguration, FakeApi } from '@openapitools/typescript-explode-query-petstore';
+import type { FakeApiTestClientModelRequest } from '@openapitools/typescript-explode-query-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new FakeApi(configuration);
@@ -704,8 +704,8 @@ Fake endpoint for testing various parameters 假端點 偽のエンドポイン�
 
 
 ```typescript
-import { createConfiguration, FakeApi } from 'ts-petstore-client';
-import type { FakeApiTestEndpointParametersRequest } from 'ts-petstore-client';
+import { createConfiguration, FakeApi } from '@openapitools/typescript-explode-query-petstore';
+import type { FakeApiTestEndpointParametersRequest } from '@openapitools/typescript-explode-query-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new FakeApi(configuration);
@@ -797,8 +797,8 @@ To test enum parameters
 
 
 ```typescript
-import { createConfiguration, FakeApi } from 'ts-petstore-client';
-import type { FakeApiTestEnumParametersRequest } from 'ts-petstore-client';
+import { createConfiguration, FakeApi } from '@openapitools/typescript-explode-query-petstore';
+import type { FakeApiTestEnumParametersRequest } from '@openapitools/typescript-explode-query-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new FakeApi(configuration);
@@ -883,8 +883,8 @@ Fake endpoint to test group parameters (optional)
 
 
 ```typescript
-import { createConfiguration, FakeApi } from 'ts-petstore-client';
-import type { FakeApiTestGroupParametersRequest } from 'ts-petstore-client';
+import { createConfiguration, FakeApi } from '@openapitools/typescript-explode-query-petstore';
+import type { FakeApiTestGroupParametersRequest } from '@openapitools/typescript-explode-query-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new FakeApi(configuration);
@@ -951,8 +951,8 @@ void (empty response body)
 
 
 ```typescript
-import { createConfiguration, FakeApi } from 'ts-petstore-client';
-import type { FakeApiTestInlineAdditionalPropertiesRequest } from 'ts-petstore-client';
+import { createConfiguration, FakeApi } from '@openapitools/typescript-explode-query-petstore';
+import type { FakeApiTestInlineAdditionalPropertiesRequest } from '@openapitools/typescript-explode-query-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new FakeApi(configuration);
@@ -1006,8 +1006,8 @@ No authorization required
 
 
 ```typescript
-import { createConfiguration, FakeApi } from 'ts-petstore-client';
-import type { FakeApiTestJsonFormDataRequest } from 'ts-petstore-client';
+import { createConfiguration, FakeApi } from '@openapitools/typescript-explode-query-petstore';
+import type { FakeApiTestJsonFormDataRequest } from '@openapitools/typescript-explode-query-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new FakeApi(configuration);
@@ -1062,8 +1062,8 @@ To test the collection format in query parameters
 
 
 ```typescript
-import { createConfiguration, FakeApi } from 'ts-petstore-client';
-import type { FakeApiTestQueryParameterCollectionFormatRequest } from 'ts-petstore-client';
+import { createConfiguration, FakeApi } from '@openapitools/typescript-explode-query-petstore';
+import type { FakeApiTestQueryParameterCollectionFormatRequest } from '@openapitools/typescript-explode-query-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new FakeApi(configuration);

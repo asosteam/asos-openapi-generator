@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 
 ```typescript
-import { createConfiguration, DefaultApi } from 'ts-petstore-client';
+import { createConfiguration, DefaultApi } from '@openapitools/typescript-explode-query-petstore';
 
 const configuration = createConfiguration();
 const apiInstance = new DefaultApi(configuration);

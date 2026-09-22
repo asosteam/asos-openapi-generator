@@ -1,5 +1,5 @@
 import { expect } from '@esm-bundle/chai';
-import { ServerConfiguration, HttpMethod } from 'ts-petstore-client'
+import { ServerConfiguration, HttpMethod } from '@openapitools/typescript-browser-petstore'
 
 describe("ServerConfiguration", () => {
     it("supports absolute http URLs", async () => {

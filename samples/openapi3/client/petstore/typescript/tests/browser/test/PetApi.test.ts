@@ -1,5 +1,5 @@
 import { expect } from '@esm-bundle/chai';
-import { ServerConfiguration, createConfiguration, PetApi, Tag, Pet, PetStatusEnum, ApiException, RequiredError } from 'ts-petstore-client'
+import { ServerConfiguration, createConfiguration, PetApi, Tag, Pet, PetStatusEnum, ApiException, RequiredError } from '@openapitools/typescript-browser-petstore'
 import image from "./pet";
 
 const configuration = createConfiguration({

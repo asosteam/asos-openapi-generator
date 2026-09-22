@@ -1,9 +1,9 @@
 const rewire = require("rewire")
 import { expect} from "chai";
-import * as petstore from "ts-petstore-client"
+import * as petstore from "@openapitools/typescript-node-petstore"
 
 
-const objectSerializerFile = rewire(__dirname + "/../../node_modules/ts-petstore-client/models/ObjectSerializer.ts")
+const objectSerializerFile = rewire(__dirname + "/../../node_modules/@openapitools/typescript-node-petstore/models/ObjectSerializer.ts")
 
 const ObjectSerializer = objectSerializerFile.__get__("ObjectSerializer")
 
