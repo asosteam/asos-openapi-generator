@@ -1,0 +1,7 @@
+public enum {{classname}}: {{dataType}}, Codable, CaseIterable{{#enumUnknownDefaultCase}}{{#isInteger}}, CaseIterableDefaultsLast{{/isInteger}}{{#isFloat}}, CaseIterableDefaultsLast{{/isFloat}}{{#isDouble}}, CaseIterableDefaultsLast{{/isDouble}}{{#isString}}, CaseIterableDefaultsLast{{/isString}}{{/enumUnknownDefaultCase}}, Sendable {
+{{#allowableValues}}
+{{#enumVars}}
+    case {{{name}}}
+{{/enumVars}}
+{{/allowableValues}}
+}

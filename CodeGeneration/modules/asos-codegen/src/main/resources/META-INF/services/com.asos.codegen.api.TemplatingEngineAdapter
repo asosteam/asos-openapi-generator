@@ -1,0 +1,2 @@
+com.asos.codegen.templating.MustacheEngineAdapter
+com.asos.codegen.templating.HandlebarsEngineAdapter

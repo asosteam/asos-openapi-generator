@@ -1,0 +1,41 @@
+# Build output
+target/
+out/
+test-output/
+classpath.txt
+version.properties
+!CodeGeneration/modules/asos-codegen-cli/src/main/resources/version.properties
+
+# Maven
+.mvn/.gradle-enterprise/
+.mvn/.develocity/
+
+# IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+.project
+.classpath
+.settings/
+.factorypath
+.vscode/
+**/.vs/
+.metals/
+nbproject/
+nbactions.xml
+nb-configuration.xml
+
+# Editors / OS
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Swift samples
+**/.build/
+**/.swiftpm/
+**/*.xcodeproj/xcuserdata/
+**/*.xcworkspace/xcuserdata/
+**/Pods/
+**/Podfile.lock

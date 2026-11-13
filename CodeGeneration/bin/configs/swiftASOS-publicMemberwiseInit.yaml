@@ -1,0 +1,12 @@
+generatorName: swiftASOS
+outputDir: samples/client/petstore/swiftASOS/publicMemberwiseInit
+inputSpec: modules/asos-codegen/src/test/resources/2_0/swift/petstore-with-fake-endpoints-models-for-testing.yaml
+templateDir: modules/asos-codegen/src/main/resources/swiftASOS
+generateAliasAsModel: true
+additionalProperties:
+  podAuthors: ""
+  podSummary: PetstoreClient
+  projectName: PetstoreClient
+  podHomepage: https://github.com/asosteam/asos-openapi-generator
+  useSPMFileStructure: true
+  publicMemberwiseInit: true
