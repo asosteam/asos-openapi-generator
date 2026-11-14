@@ -108,6 +108,10 @@ public class OpenAPINormalizer {
     final String FILTER = "FILTER";
     HashSet<String> operationIdFilters = new HashSet<>();
 
+    // when set to true, remove operations marked x-internal (e.g. by FILTER) and every
+    // components/schemas entry no longer referenced by the remaining operations
+    final String REMOVE_UNUSED_SCHEMAS = "REMOVE_UNUSED_SCHEMAS";
+
     // when set (e.g. operationId:getPetById|addPet), filter out (or remove) everything else
     final String SET_CONTAINER_TO_NULLABLE = "SET_CONTAINER_TO_NULLABLE";
     HashSet<String> setContainerToNullable = new HashSet<>();
@@ -154,6 +158,7 @@ public class OpenAPINormalizer {
         ruleNames.add(NORMALIZE_31SPEC);
         ruleNames.add(REMOVE_X_INTERNAL);
         ruleNames.add(FILTER);
+        ruleNames.add(REMOVE_UNUSED_SCHEMAS);
         ruleNames.add(SET_CONTAINER_TO_NULLABLE);
         ruleNames.add(SET_PRIMITIVE_TYPES_TO_NULLABLE);
 
@@ -288,6 +293,40 @@ public class OpenAPINormalizer {
         normalizePaths();
         normalizeComponentsSchemas();
         normalizeComponentsResponses();
+        removeUnusedSchemas();
+    }
+
+    /**
+     * Drops operations flagged x-internal and the component schemas that are only
+     * reachable from them, so that only the schemas of the kept operations remain.
+     */
+    private void removeUnusedSchemas() {
+        if (!getRule(REMOVE_UNUSED_SCHEMAS) || openAPI.getPaths() == null) {
+            return;
+        }
+
+        Iterator<Map.Entry<String, PathItem>> pathIterator = openAPI.getPaths().entrySet().iterator();
+        while (pathIterator.hasNext()) {
+            PathItem pathItem = pathIterator.next().getValue();
+            for (Map.Entry<PathItem.HttpMethod, Operation> entry : pathItem.readOperationsMap().entrySet()) {
+                Operation operation = entry.getValue();
+                if (operation.getExtensions() != null
+                        && Boolean.parseBoolean(String.valueOf(operation.getExtensions().get(X_INTERNAL)))) {
+                    pathItem.operation(entry.getKey(), null);
+                }
+            }
+            if (pathItem.readOperations().isEmpty()) {
+                pathIterator.remove();
+            }
+        }
+
+        Map<String, Schema> schemas = openAPI.getComponents().getSchemas();
+        List<String> unused = ModelUtils.getUnusedSchemas(openAPI);
+        Collections.sort(unused);
+        for (String name : unused) {
+            LOGGER.info("Schema `{}` removed by REMOVE_UNUSED_SCHEMAS: not referenced by any remaining operation", name);
+            schemas.remove(name);
+        }
     }
 
     /**

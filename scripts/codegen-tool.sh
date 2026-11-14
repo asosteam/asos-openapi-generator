@@ -33,6 +33,7 @@ OUTPUT_FOLDER="$SCRIPT_DIR/../out"
 GENERATOR_NAME="swiftASOS"
 INPUT_SPEC=""
 TEMPLATE_FOLDER=""
+OPENAPI_NORMALIZER=""
 IGNORE_BUILD=false
 PUBLIC_MEMBERWISE_INIT=false
 
@@ -45,6 +46,7 @@ usage() {
     echo "  -g                 Generator name (default: swiftASOS)"
     echo "  -i                 Input specification file (mandatory)"
     echo '  -t                 Template directory (defaut: empty)'
+    echo "  -n                 OpenAPI normalizer rules, e.g. FILTER=operationId:getPet,REMOVE_UNUSED_SCHEMAS=true (default: empty)"
     echo "  --public-memberwise-init  Add public memberwise initializer extension (default: false)"
     echo "  --ignore-build     Ignore the build process (default: false)"
     echo "  --help             Display this help message"
@@ -68,6 +70,9 @@ while [ "$1" != "" ]; do
              ;;
         -t ) shift
              TEMPLATE_FOLDER=$1
+             ;;
+        -n ) shift
+             OPENAPI_NORMALIZER=$1
              ;;
         --public-memberwise-init ) PUBLIC_MEMBERWISE_INIT=true
              ;;
@@ -107,6 +112,11 @@ JAVA_CMD="java -jar $PROJECT_JAR_PATH generate \
 # Append --template-dir if TEMPLATE_FOLDER is not empty
 if [ -n "$TEMPLATE_FOLDER" ]; then
     JAVA_CMD="$JAVA_CMD --template-dir $TEMPLATE_FOLDER"
+fi
+
+# Append --openapi-normalizer if rules were given
+if [ -n "$OPENAPI_NORMALIZER" ]; then
+    JAVA_CMD="$JAVA_CMD --openapi-normalizer $OPENAPI_NORMALIZER"
 fi
 
 # Append --additional-properties if PUBLIC_MEMBERWISE_INIT is true

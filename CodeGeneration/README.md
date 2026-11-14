@@ -63,6 +63,12 @@ sh ../scripts/create-swift-package.sh ~/Desktop/customer-loyalty-v1.yaml ~/Deskt
 sh ../scripts/create-swift-package.sh https://host/api/openapi.yaml ./Packages --name MyAPI
 ```
 
+Re-running against an existing package only replaces the model files; `Package.swift` and `Tests/` are kept.
+Add `--endpoint` to pick a single endpoint from a menu and generate just the models it uses (they are added
+to the existing ones, so endpoints can be accumulated run by run). Under the hood this passes
+`--openapi-normalizer FILTER=operationId:<id>,REMOVE_UNUSED_SCHEMAS=true` to the generator; `REMOVE_UNUSED_SCHEMAS`
+is a rule added in this project that drops operations flagged `x-internal` and every component schema they alone reference.
+
 ## Working on the generator
 
 After changing `SwiftASOSClientCodegen.java` or the templates:
