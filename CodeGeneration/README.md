@@ -56,6 +56,13 @@ Or use the helper script at the repository root (builds the jar first unless `--
 sh ../scripts/codegen-tool.sh -i path/to/openapi.yaml -o out
 ```
 
+To get a ready-to-use Swift Package (one library, `<Name>` and `<Name>Tests` targets) containing only the models of a contract:
+
+```sh
+sh ../scripts/create-swift-package.sh ~/Desktop/customer-loyalty-v1.yaml ~/Desktop   # -> ~/Desktop/CustomerLoyaltyV1
+sh ../scripts/create-swift-package.sh https://host/api/openapi.yaml ./Packages --name MyAPI
+```
+
 ## Working on the generator
 
 After changing `SwiftASOSClientCodegen.java` or the templates:
