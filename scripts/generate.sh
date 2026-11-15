@@ -1,49 +1,53 @@
 #!/bin/sh
 #
-# Generates a Swift Package containing the API models of an OpenAPI contract.
+# Generates Swift API models from an OpenAPI contract.
 #
 # The contract can be a local YAML file or a remote URL. Models are generated
-# with codegen-tool.sh (swiftASOS generator, models only) and wrapped in a
-# package with one library product, a main target and an empty test target.
+# with CodeGeneration/scripts/codegen-tool.sh (swiftASOS generator, models only)
+# and then either:
+#   --mode package  wrapped in a Swift Package with one library product, a main
+#                   target and an empty test target (default), or
+#   --mode models   exported as plain .swift files.
 #
-# When the package already exists only the model files are replaced; Package.swift
-# and Tests/ are left untouched. With --endpoint a single operation is chosen
-# interactively and only the models it uses are generated (added to / overwriting
-# the existing model files, so endpoints can be accumulated over several runs).
+# When the destination already exists only the model files are replaced; in
+# package mode Package.swift and Tests/ are left untouched. With --endpoint a
+# single operation is chosen interactively and only the models it uses are
+# generated and merged into the existing model files, so endpoints can be
+# accumulated over several runs. Build output of CodeGeneration is removed on exit.
 
 set -u
 
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
-CODEGEN_TOOL="$SCRIPT_DIR/codegen-tool.sh"
+CODEGEN_DIR=$(cd "$SCRIPT_DIR/../CodeGeneration" 2>/dev/null && pwd) || { echo "Error: CodeGeneration folder not found next to scripts/" >&2; exit 1; }
+CODEGEN_TOOL="$CODEGEN_DIR/scripts/codegen-tool.sh"
 
 INPUT=""
 OUTPUT=""
-PACKAGE_NAME=""
-IGNORE_BUILD=false
-PUBLIC_MEMBERWISE_INIT=false
-SKIP_SWIFT_BUILD=false
+NAME=""
+MODE="package"
 ENDPOINT_MODE=false
 
 usage() {
     cat <<EOF
-Usage: sh create-swift-package.sh <input> <output> [options]
+Usage: sh generate.sh --input <contract> --output <directory> [options]
 
-Arguments:
-  input                     Path or URL of the OpenAPI YAML contract
-  output                    Directory in which the Swift Package is created
+Required:
+  --input <contract>     Path or URL of the OpenAPI YAML contract
+  --output <directory>   Directory in which the result is created
 
 Options:
-  --name <Name>             Package name (default: CamelCase of the contract file name,
-                            e.g. customer-loyalty-v1 -> CustomerLoyaltyV1)
-  --endpoint                Interactively pick one endpoint of the contract and generate
-                            only the models it uses (default: all models)
-  --public-memberwise-init  Generate public memberwise initialisers for the models
-  --ignore-build            Do not rebuild the code generator before generating
-  --skip-swift-build        Create the package but do not compile it
-  --help                    Display this help message
+  --mode <package|models>
+                         package: create/update a Swift Package <output>/<Name>/ (default)
+                         models:  export the model files to <output>/<Name>/
+  --name <Name>          Package / folder name (default: CamelCase of the contract file name,
+                         e.g. customer-loyalty-v1 -> CustomerLoyaltyV1)
+  --endpoint             Interactively pick one endpoint of the contract and generate
+                         only the models it uses (default: all models)
+  --help                 Display this help message
 
-Example:
-  sh create-swift-package.sh ~/Desktop/customer-loyalty-v1.yaml ~/Desktop
+Examples:
+  sh generate.sh --input ~/Desktop/customer-loyalty-v1.yaml --output ~/Desktop
+  sh generate.sh --input https://host/api/openapi.yaml --output ./Generated --mode models --name MyAPI
 EOF
     exit "${1:-1}"
 }
@@ -104,49 +108,58 @@ list_endpoints() {
 
 while [ $# -gt 0 ]; do
     case "$1" in
-        --name) shift; [ $# -gt 0 ] || usage; PACKAGE_NAME="$1" ;;
+        --input) shift; [ $# -gt 0 ] || usage; INPUT="$1" ;;
+        --output) shift; [ $# -gt 0 ] || usage; OUTPUT="$1" ;;
+        --mode) shift; [ $# -gt 0 ] || usage; MODE="$1" ;;
+        --name) shift; [ $# -gt 0 ] || usage; NAME="$1" ;;
         --endpoint) ENDPOINT_MODE=true ;;
-        --public-memberwise-init) PUBLIC_MEMBERWISE_INIT=true ;;
-        --ignore-build) IGNORE_BUILD=true ;;
-        --skip-swift-build) SKIP_SWIFT_BUILD=true ;;
         --help|-h) usage 0 ;;
-        -*) echo "Unknown option: $1" >&2; usage ;;
-        *)
-            if [ -z "$INPUT" ]; then INPUT="$1"
-            elif [ -z "$OUTPUT" ]; then OUTPUT="$1"
-            else echo "Unexpected argument: $1" >&2; usage
-            fi
-            ;;
+        *) echo "Unknown argument: $1" >&2; usage ;;
     esac
     shift
 done
 
-[ -n "$INPUT" ] || { echo "Missing <input>" >&2; usage; }
-[ -n "$OUTPUT" ] || { echo "Missing <output>" >&2; usage; }
-[ -f "$CODEGEN_TOOL" ] || fail "codegen-tool.sh not found next to this script ($CODEGEN_TOOL)"
+[ -n "$INPUT" ] || { echo "Missing --input" >&2; usage; }
+[ -n "$OUTPUT" ] || { echo "Missing --output" >&2; usage; }
+case "$MODE" in
+    package|models) ;;
+    *) echo "Invalid --mode '$MODE' (expected: package or models)" >&2; usage ;;
+esac
+[ -f "$CODEGEN_TOOL" ] || fail "codegen-tool.sh not found at $CODEGEN_TOOL"
 
 INPUT=$(expand_tilde "$INPUT")
 OUTPUT=$(expand_tilde "$OUTPUT")
 
-# ── Swift toolchain ───────────────────────────────────────────────────────────
+# ── Swift toolchain (package mode) ────────────────────────────────────────────
 
-# Prefer the Xcode toolchain on macOS: standalone toolchains on PATH may not match the installed SDK.
-if command -v xcrun >/dev/null 2>&1 && xcrun --find swift >/dev/null 2>&1; then
-    SWIFT="xcrun swift"
-elif command -v swift >/dev/null 2>&1; then
-    SWIFT="swift"
-else
-    fail "Swift toolchain not found. Install Xcode or a Swift toolchain."
+SWIFT=""
+SWIFT_VERSION=""
+if [ "$MODE" = package ]; then
+    # Prefer the Xcode toolchain on macOS: standalone toolchains on PATH may not match the installed SDK.
+    if command -v xcrun >/dev/null 2>&1 && xcrun --find swift >/dev/null 2>&1; then
+        SWIFT="xcrun swift"
+    elif command -v swift >/dev/null 2>&1; then
+        SWIFT="swift"
+    else
+        fail "Swift toolchain not found. Install Xcode or a Swift toolchain."
+    fi
+
+    SWIFT_VERSION=$($SWIFT --version 2>&1 | sed -n 's/.*Swift version \([0-9][0-9]*\.[0-9][0-9]*\).*/\1/p' | head -1)
+    [ -n "$SWIFT_VERSION" ] || fail "Unable to determine the Swift version from '$SWIFT --version'"
 fi
-
-SWIFT_VERSION=$($SWIFT --version 2>&1 | sed -n 's/.*Swift version \([0-9][0-9]*\.[0-9][0-9]*\).*/\1/p' | head -1)
-[ -n "$SWIFT_VERSION" ] || fail "Unable to determine the Swift version from '$SWIFT --version'"
 SWIFT_TOOLS_VERSION="$SWIFT_VERSION"
 
-# ── Working directory ─────────────────────────────────────────────────────────
+# ── Working directory and cleanup ─────────────────────────────────────────────
 
-WORK_DIR=$(mktemp -d "${TMPDIR:-/tmp}/create-swift-package.XXXXXX") || fail "Unable to create a temporary directory"
-trap 'rm -rf "$WORK_DIR"' EXIT INT TERM
+WORK_DIR=$(mktemp -d "${TMPDIR:-/tmp}/asos-codegen.XXXXXX") || fail "Unable to create a temporary directory"
+
+# Removes the temporary files and everything the generator build produced inside CodeGeneration.
+cleanup() {
+    trap - EXIT INT TERM
+    rm -rf "$WORK_DIR" "$CODEGEN_DIR/out"
+    find "$CODEGEN_DIR" -type d -name target -prune -exec rm -rf {} + 2>/dev/null
+}
+trap cleanup EXIT INT TERM
 
 # ── Resolve the contract ──────────────────────────────────────────────────────
 
@@ -166,8 +179,9 @@ else
 fi
 
 API_NAME="${CONTRACT_NAME%.*}"
-[ -n "$PACKAGE_NAME" ] || PACKAGE_NAME=$(camel_case "$API_NAME")
-[ -n "$PACKAGE_NAME" ] || fail "Unable to derive a package name from '$CONTRACT_NAME'; use --name"
+[ -n "$NAME" ] || NAME=$(camel_case "$API_NAME")
+[ -n "$NAME" ] || fail "Unable to derive a name from '$CONTRACT_NAME'; use --name"
+PACKAGE_NAME="$NAME"
 TEST_TARGET_NAME="${PACKAGE_NAME}Tests"
 
 # ── Endpoint selection ────────────────────────────────────────────────────────
@@ -222,8 +236,6 @@ fi
 GEN_DIR="$WORK_DIR/gen"
 set -- -i "$CONTRACT" -o "$GEN_DIR"
 [ -n "$NORMALIZER_RULES" ] && set -- "$@" -n "$NORMALIZER_RULES"
-[ "$IGNORE_BUILD" = true ] && set -- "$@" --ignore-build
-[ "$PUBLIC_MEMBERWISE_INIT" = true ] && set -- "$@" --public-memberwise-init
 sh "$CODEGEN_TOOL" "$@" || fail "Model generation failed (see output above)"
 
 MODELS_DIR=$(find "$GEN_DIR" -type d -name Models | head -1)
@@ -231,10 +243,41 @@ MODELS_DIR=$(find "$GEN_DIR" -type d -name Models | head -1)
 MODEL_COUNT=$(find "$MODELS_DIR" -name '*.swift' | wc -l | tr -d ' ')
 [ "$MODEL_COUNT" -gt 0 ] || fail "No model files were generated from $CONTRACT_NAME"
 
-# ── Create the package ────────────────────────────────────────────────────────
-
 mkdir -p "$OUTPUT" || fail "Unable to create output directory $OUTPUT"
 OUTPUT=$(cd "$OUTPUT" && pwd)
+
+# ── Export the models (models mode) ───────────────────────────────────────────
+
+if [ "$MODE" = models ]; then
+    DEST_DIR="$OUTPUT/$NAME"
+    if [ -d "$DEST_DIR" ]; then
+        echo "Updating models in $DEST_DIR ..."
+    else
+        echo "Exporting models to $DEST_DIR ..."
+    fi
+    # Endpoint mode merges into the existing files; a full export replaces them wholesale.
+    [ "$ENDPOINT_MODE" = true ] || rm -rf "$DEST_DIR"
+    mkdir -p "$DEST_DIR"
+    cp "$MODELS_DIR"/*.swift "$DEST_DIR"/
+
+    for f in "$MODELS_DIR"/*.swift; do
+        cmp -s "$f" "$DEST_DIR/$(basename "$f")" || fail "Generated model $(basename "$f") was not copied into $DEST_DIR"
+    done
+    DEST_COUNT=$(find "$DEST_DIR" -name '*.swift' | wc -l | tr -d ' ')
+
+    cat <<EOF
+
+Models exported successfully.
+  Folder:        $DEST_DIR
+  Contract:      $CONTRACT_NAME
+  Scope:         ${SELECTED_ENDPOINT:-all endpoints}
+  Models:        $MODEL_COUNT generated, $DEST_COUNT file(s) in the folder
+EOF
+    exit 0
+fi
+
+# ── Create the package ────────────────────────────────────────────────────────
+
 PACKAGE_DIR="$OUTPUT/$PACKAGE_NAME"
 SOURCES_DIR="$PACKAGE_DIR/Sources/$PACKAGE_NAME"
 TESTS_DIR="$PACKAGE_DIR/Tests/$TEST_TARGET_NAME"
@@ -319,16 +362,14 @@ echo "swift package describe:"
 $SWIFT package describe 2>&1 | grep -v "Source files for target $TEST_TARGET_NAME should be located" | sed 's/^/  /'
 echo
 
-if [ "$SKIP_SWIFT_BUILD" = false ]; then
-    echo "Building package ..."
-    BUILD_LOG="$WORK_DIR/swift-build.log"
-    if ! $SWIFT build >"$BUILD_LOG" 2>&1; then
-        grep -E "error:" "$BUILD_LOG" | grep -v '^ *|' >&2
-        fail "swift build failed. Full log:
+echo "Building package ..."
+BUILD_LOG="$WORK_DIR/swift-build.log"
+if ! $SWIFT build >"$BUILD_LOG" 2>&1; then
+    grep -E "error:" "$BUILD_LOG" | grep -v '^ *|' >&2
+    fail "swift build failed. Full log:
 $(cat "$BUILD_LOG")"
-    fi
-    rm -rf .build
 fi
+rm -rf .build
 
 cat <<EOF
 
@@ -342,5 +383,5 @@ Swift Package $([ "$PACKAGE_EXISTS" = true ] && echo updated || echo created) su
   Targets:       $TARGET_COUNT
   Test sources:  $TEST_FILE_COUNT file(s)
 EOF
-[ "$SKIP_SWIFT_BUILD" = false ] && echo "  Build:         OK"
+echo "  Build:         OK"
 exit 0

@@ -1,8 +1,11 @@
 # asos-codegen
 
-An OpenAPI code generator shipping the **`swiftASOS`** generator: a Swift client generator following ASOS conventions.
+The OpenAPI code generator behind this repository. It ships a single generator, **`swiftASOS`**, which produces
+Swift models following ASOS conventions. For day-to-day usage see the [root README](../README.md); this document
+covers building and changing the generator.
 
-The project is a Maven multi-module build. The usual `asos-codegen-cli.jar` commands (`generate`, `batch`, `config-help`, `list`, `validate`, ...) are available.
+The project is a Maven multi-module build producing `asos-codegen-cli.jar`, which supports the usual
+`generate`, `batch`, `config-help`, `list` and `validate` commands.
 
 ## Layout
 
@@ -13,7 +16,9 @@ The project is a Maven multi-module build. The usual `asos-codegen-cli.jar` comm
 | `modules/asos-codegen-cli` | Command line interface, builds `asos-codegen-cli.jar` |
 | `modules/asos-codegen/src/main/java/com/asos/codegen/languages/SwiftASOSClientCodegen.java` | The generator |
 | `modules/asos-codegen/src/main/resources/swiftASOS/` | Templates |
-| `modules/asos-codegen/src/test/java/com/asos/codegen/swiftASOS/` | Generator unit tests |
+| `modules/asos-codegen/src/main/java/com/asos/codegen/OpenAPINormalizer.java` | Spec normalizer; includes the `REMOVE_UNUSED_SCHEMAS` rule used for per-endpoint generation |
+| `modules/asos-codegen/src/test/java/com/asos/codegen/` | Unit tests (`swiftASOS/` for the generator) |
+| `scripts/codegen-tool.sh` | Builds the jar and runs the generator for one contract (models only) |
 | `bin/configs/` | Sample configurations, used by `bin/generate-samples.sh` |
 | `samples/client/petstore/swiftASOS/` | Generated samples (source-controlled; regenerate after generator changes) |
 
@@ -23,51 +28,28 @@ The project is a Maven multi-module build. The usual `asos-codegen-cli.jar` comm
 - Maven is provided through the wrapper (`./mvnw`)
 - Swift 5.9+ / Xcode to build the generated samples
 
-## Build
+## Build and test
 
 ```sh
-./mvnw clean package
+./mvnw clean package                                   # build everything, run tests
+./mvnw -pl modules/asos-codegen test                   # tests only
 ```
 
-Run only the generator tests:
+## Run the generator
 
 ```sh
-./mvnw -pl modules/asos-codegen test -Dtest='com.asos.codegen.swiftASOS.*'
+java -jar modules/asos-codegen-cli/target/asos-codegen-cli.jar generate -g swiftASOS -i path/to/openapi.yaml -o out
+java -jar modules/asos-codegen-cli/target/asos-codegen-cli.jar config-help -g swiftASOS   # all options
 ```
 
-## Generate a client
+Or through the wrapper script, which builds the jar first unless `--ignore-build` is passed and generates models only:
 
 ```sh
-java -jar modules/asos-codegen-cli/target/asos-codegen-cli.jar generate \
-  -g swiftASOS \
-  -i path/to/openapi.yaml \
-  -o out
+sh scripts/codegen-tool.sh -i path/to/openapi.yaml -o out
 ```
 
-List all options:
-
-```sh
-java -jar modules/asos-codegen-cli/target/asos-codegen-cli.jar config-help -g swiftASOS
-```
-
-Or use the helper script at the repository root (builds the jar first unless `--ignore-build` is passed):
-
-```sh
-sh ../scripts/codegen-tool.sh -i path/to/openapi.yaml -o out
-```
-
-To get a ready-to-use Swift Package (one library, `<Name>` and `<Name>Tests` targets) containing only the models of a contract:
-
-```sh
-sh ../scripts/create-swift-package.sh ~/Desktop/customer-loyalty-v1.yaml ~/Desktop   # -> ~/Desktop/CustomerLoyaltyV1
-sh ../scripts/create-swift-package.sh https://host/api/openapi.yaml ./Packages --name MyAPI
-```
-
-Re-running against an existing package only replaces the model files; `Package.swift` and `Tests/` are kept.
-Add `--endpoint` to pick a single endpoint from a menu and generate just the models it uses (they are added
-to the existing ones, so endpoints can be accumulated run by run). Under the hood this passes
-`--openapi-normalizer FILTER=operationId:<id>,REMOVE_UNUSED_SCHEMAS=true` to the generator; `REMOVE_UNUSED_SCHEMAS`
-is a rule added in this project that drops operations flagged `x-internal` and every component schema they alone reference.
+Options: `-o` output folder, `-g` generator, `-t` template directory, `-n` OpenAPI normalizer rules
+(e.g. `FILTER=operationId:getPet,REMOVE_UNUSED_SCHEMAS=true`), `--public-memberwise-init`, `--ignore-build`.
 
 ## Working on the generator
 

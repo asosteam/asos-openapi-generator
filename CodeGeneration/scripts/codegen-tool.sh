@@ -28,7 +28,7 @@ export PATH="$JAVA_HOME/bin:$PATH"
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 
 # Default values
-PROJECT_PATH="$SCRIPT_DIR/../CodeGeneration"
+PROJECT_PATH="$SCRIPT_DIR/.."
 OUTPUT_FOLDER="$SCRIPT_DIR/../out"
 GENERATOR_NAME="swiftASOS"
 INPUT_SPEC=""
@@ -41,8 +41,8 @@ PUBLIC_MEMBERWISE_INIT=false
 usage() {
     echo "Usage: sh codegen-tool.sh -i input_spec"
     echo "Options:"
-    echo "  -p                 Path to the CodeGeneration project (default: ../CodeGeneration)"
-    echo "  -o                 Output folder (default: ../out)"
+    echo "  -p                 Path to the CodeGeneration project (default: the CodeGeneration folder containing this script)"
+    echo "  -o                 Output folder (default: CodeGeneration/out)"
     echo "  -g                 Generator name (default: swiftASOS)"
     echo "  -i                 Input specification file (mandatory)"
     echo '  -t                 Template directory (defaut: empty)'
